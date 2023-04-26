@@ -36,11 +36,47 @@ async function updateAPI(cityName) {
     data = APIData;
 
     console.log(data);
+    newTime(data);
     updateUI(data);
     return data;
   } catch (error) {
     console.error('Error fetching data:', error);
   }
 }
+
+let localTime = null;
+
+function newTime() {
+  const currentTimeElement = document.getElementById('current-time');
+  const localTimeString = data.location.localtime;
+  localTime = new Date(localTimeString);
+  const options = {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  };
+  const formattedTime = localTime.toLocaleString('en-US', options);
+  currentTimeElement.textContent = formattedTime;
+}
+
+function updateTime() {
+  const currentTimeElement = document.getElementById('current-time');
+  // Add 1 to the minute value
+  localTime.setMinutes(localTime.getMinutes() + 1);
+  const options = {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  };
+  const formattedTime = localTime.toLocaleString('en-US', options);
+  currentTimeElement.textContent = formattedTime;
+}
+
+let intervalId = setInterval(() => {
+  const now = new Date();
+  if (now.getSeconds() === 0) {
+    updateTime();
+  }
+}, 1000);
 
 updateAPI('London');
