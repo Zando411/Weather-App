@@ -82,10 +82,21 @@ select {
 body {
   background-image: url('images/pexels-krivec-ales-551851.jpg'); /* The image used */
   background-color: #000; /* Used if the image is unavailable */
-  height: 100vh; /* You must set a specified height */
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover; /* Resize the background image to cover the entire container */
+}
+
+@media (min-width: 1001px) {
+  body {
+    height: 100vh;
+  }
+}
+
+@media (max-width: 1000px) {
+  body {
+    height: auto;
+  }
 }
 
 * {
@@ -106,20 +117,35 @@ body p#attribute {
   border-radius: 5px;
   padding: 0.5rem 1rem;
   position: absolute;
-  bottom: 4px;
-  right: 4px;
+  top: 4px;
+  left: 4px;
   font-size: 12px;
+}
+
+@media screen and (max-width: 1000px) {
+  body p#attribute {
+    top: 4px;
+    left: 4px;
+    font-size: 10px;
+  }
 }
 
 main {
   height: 100%;
   display: grid;
-  grid-template-rows: 70% 30%;
+  grid-template-rows: 1fr 1fr;
 }
 
 #top-section {
   display: grid;
-  grid-template-rows: 60px 1fr 3fr 40px;
+  grid-template-rows: 60px 200px 400px 50px;
+  gap: 8px;
+}
+
+@media screen and (max-width: 1000px) {
+  #top-section {
+    grid-template-rows: 60px 400px 400px 50px;
+  }
 }
 
 #city-search {
@@ -193,11 +219,23 @@ input:focus::placeholder {
 }
 
 #bottom-info {
+  justify-self: center;
   display: flex;
   font-size: 24px;
   justify-content: center;
   align-items: center;
   padding-bottom: 0.5rem;
+  backdrop-filter: blur(1px);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+  width: fit-content;
+}
+
+@media screen and (max-width: 1000px) {
+  #bottom-info {
+    width: fit-content;
+  }
 }
 
 #bottom-info p {
@@ -208,9 +246,49 @@ input:focus::placeholder {
 }
 
 #week-forecast {
-  background-color: rgba(var(--color1), 0.7);
+  backdrop-filter: blur(1px);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
   width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 10px;
+}
+
+.card {
+  backdrop-filter: blur(3px);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+  height: 10vw;
+  width: calc(100% / 7);
+  position: relative;
+}
+
+.card .card-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-evenly;
+  padding: 10px;
+  align-items: center;
+}
+
+@media (max-width: 1000px) {
+  #week-forecast {
+    flex-direction: column;
+  }
+
+  .card {
+    width: 100%;
+    height: 100px;
+    border-radius: 0;
+  }
 }
 
 #center-info #left-info #time-text {
@@ -237,13 +315,17 @@ input:focus::placeholder {
 
 #change {
   color: white;
-  background-color: rgb(var(--color1));
+  backdrop-filter: blur(1px);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+  margin-bottom: 8px;
   padding: 8px 16px;
   border-radius: 60px;
   outline: none;
   border: none;
   cursor: pointer;
-  width: 20%;
+  width: fit-content;
   justify-self: center;
 }
 
@@ -267,4 +349,17 @@ input:focus::placeholder {
 }
 #right-bottom {
   width: 280px;
+}
+
+@media screen and (max-width: 1000px) {
+  #center-info {
+    flex-direction: column;
+  }
+
+  #left-info,
+  #right-info {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+  }
 }
