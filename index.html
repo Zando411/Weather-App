@@ -5,6 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
     <script defer src="app.js"></script>
   </head>
@@ -12,20 +22,29 @@
     <main>
       <div id="top-section">
         <div id="city-search">
-          <input type="text" name="city" id="city" />
-          <button onclick="getCity()">click me</button>
+          <input
+            type="text"
+            name="city"
+            id="city"
+            placeholder="Enter a city name"
+          />
+          <button onclick="getCity()" class="material-icons">search</button>
         </div>
-        <p>Current Time: <span id="current-time"></span></p>
-        <div>
-          <h2>Current weather in <span id="city-name"></span></h2>
-          <p>Temperature: <span id="temp-c"></span>°C</p>
-          <p>
-            Condition: <img id="condition-icon" src="" alt="" /><span
-              id="condition-text"
-            ></span>
-          </p>
+        <div id="center-info">
+          <div id="left-info">
+            <h1 id="time-text"><span id="current-time"></span></h1>
+            <h2><span id="current-date">Wednesday, 4 April 2023</span></h2>
+          </div>
+          <div id="right-info">
+            <h1><span id="city-name"></span>Corvallis</h1>
+            <h2><span id="city-state"></span>Oregon</h2>
+          </div>
+        </div>
+        <div id="bottom-info">
           <p>Humidity: <span id="humidity"></span>%</p>
           <p>Wind speed: <span id="wind-speed"></span> km/h</p>
+          <p>Feels like:<span id="feels-like"></span></p>
+          <p><span id="chance-of-rain"></span> chance of rain</p>
         </div>
       </div>
       <div id="week-forecast"></div>
@@ -33,10 +52,11 @@
     <p id="attribute">
       Photo by
       <a
-        href="https://www.pexels.com/photo/silhouette-of-mountains-1323550/"
+        href="https://www.pexels.com/photo/green-grass-field-551851/"
         target="_blank"
         rel="noopener noreferrer"
-        >Simon Berger
+      >
+        Krivec Ales
       </a>
     </p>
   </body>

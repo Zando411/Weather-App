@@ -1,5 +1,7 @@
 let data;
 
+let imperial = true;
+
 function getCity() {
   let input = document.getElementById('city');
   let city = input.value;
@@ -8,19 +10,24 @@ function getCity() {
   input.value = '';
 }
 
-function updateUI(data) {
-  const cityNameEl = document.getElementById('city-name');
-  const tempCEl = document.getElementById('temp-c');
-  const conditionIconEl = document.getElementById('condition-icon');
-  const conditionTextEl = document.getElementById('condition-text');
-  const humidityEl = document.getElementById('humidity');
-  const windSpeedEl = document.getElementById('wind-speed');
+const cityNameEl = document.getElementById('city-name');
+const humidityEl = document.getElementById('humidity');
+const windSpeedEl = document.getElementById('wind-speed');
 
+function updateUIImperial(data) {}
+
+function updateUIMetric(data) {
   cityNameEl.textContent = data.location.name;
-  tempCEl.textContent = data.current.temp_c;
-  conditionTextEl.textContent = data.current.condition.text;
   humidityEl.textContent = data.current.humidity;
   windSpeedEl.textContent = data.current.wind_kph;
+}
+
+function updateUI(data) {
+  if (imperial === true) {
+    updateUIImperial(data);
+  } else {
+    updateUIMetric(data);
+  }
 }
 
 async function updateAPI(cityName) {
@@ -61,7 +68,6 @@ function newTime() {
 
 function updateTime() {
   const currentTimeElement = document.getElementById('current-time');
-  // Add 1 to the minute value
   localTime.setMinutes(localTime.getMinutes() + 1);
   const options = {
     hour: 'numeric',
