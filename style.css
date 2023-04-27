@@ -202,7 +202,7 @@ input:focus::placeholder {
 
 #bottom-info p {
   color: white;
-  background-color: rgba(var(--color1), 0.7);
+  background-color: rgb(var(--color1));
   padding: 8px 16px;
   border-radius: 60px;
 }
@@ -233,4 +233,14 @@ input:focus::placeholder {
 #center-info h2,
 #center-info h3 {
   text-shadow: 1px 0px 2px gray;
+}
+
+#change {
+  color: white;
+  background-color: rgb(var(--color1));
+  padding: 8px 16px;
+  border-radius: 60px;
+  outline: none;
+  border: none;
+  cursor: pointer;
 }

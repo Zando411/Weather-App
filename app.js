@@ -1,13 +1,35 @@
 let data;
 
-let imperial = true;
-
 function getCity() {
   let input = document.getElementById('city');
   let city = input.value;
   let cityName = city;
   updateAPI(cityName);
   input.value = '';
+}
+
+let imperial = true;
+
+function changeUnits() {
+  if (imperial === true) {
+    imperial = false;
+    unitDisplay();
+  } else {
+    imperial = true;
+    unitDisplay();
+  }
+}
+
+function unitDisplay() {
+  const impSpan = document.getElementById('degreesF');
+  const metSpan = document.getElementById('degreesC');
+  if (imperial === true) {
+    metSpan.style.opacity = '50%';
+    impSpan.style.opacity = '100%';
+  } else {
+    impSpan.style.opacity = '50%';
+    metSpan.style.opacity = '100%';
+  }
 }
 
 const cityNameEl = document.getElementById('city-name');
@@ -85,4 +107,9 @@ let intervalId = setInterval(() => {
   }
 }, 1000);
 
-updateAPI('London');
+function initalizeApp() {
+  unitDisplay();
+  updateAPI('London');
+}
+
+initalizeApp();
