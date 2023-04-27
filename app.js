@@ -70,10 +70,10 @@ function formatDate(data) {
     'December',
   ];
   let d = new Date(date);
-  let dayName = days[d.getDay()];
+  let dayName = days[d.getDay() + 1];
   let monthName = months[d.getMonth()];
   let fullYear = d.getFullYear();
-  let day = d.getDate();
+  let day = d.getDate() + 1;
 
   currentWeekdayEl.textContent = dayName;
   dateEl.textContent = ` ${day} ${monthName} ${fullYear}`;
