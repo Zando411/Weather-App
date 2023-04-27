@@ -26,9 +26,10 @@ const cityNameEl = document.getElementById('city-name');
 const cityStateEl = document.getElementById('city-state');
 const humidityEl = document.getElementById('humidity');
 const windSpeedEl = document.getElementById('wind-speed');
-const dateEl = document.getElementById('current-date');
 const feelsLikeEl = document.getElementById('feels-like');
 const chanceOfRainEl = document.getElementById('chance-of-rain');
+const currentWeekdayEl = document.getElementById('current-weekday');
+const dateEl = document.getElementById('current-date');
 
 function checkIfUnitedStates(data) {
   let country = data.location.country;
@@ -39,6 +40,43 @@ function checkIfUnitedStates(data) {
   } else {
     cityStateEl.textContent = country;
   }
+}
+
+function formatDate(data) {
+  let date = data.forecast.forecastday[0].date;
+
+  const days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  let d = new Date(date);
+  let dayName = days[d.getDay()];
+  let monthName = months[d.getMonth()];
+  let fullYear = d.getFullYear();
+  let day = d.getDate();
+
+  currentWeekdayEl.textContent = dayName;
+  dateEl.textContent = ` ${day} ${monthName} ${fullYear}`;
 }
 
 function updateUIImperial(data) {
@@ -63,6 +101,8 @@ function updateUI(data) {
   } else {
     updateUIMetric(data);
   }
+
+  formatDate(data);
 }
 
 function changeUnits() {
