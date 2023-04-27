@@ -30,6 +30,8 @@ const feelsLikeEl = document.getElementById('feels-like');
 const chanceOfRainEl = document.getElementById('chance-of-rain');
 const currentWeekdayEl = document.getElementById('current-weekday');
 const dateEl = document.getElementById('current-date');
+const conditionEl = document.getElementById('condition-img');
+const currentTempEl = document.getElementById('current-temp');
 
 function checkIfUnitedStates(data) {
   let country = data.location.country;
@@ -82,11 +84,13 @@ function formatDate(data) {
 function updateUIImperial(data) {
   windSpeedEl.textContent = data.current.wind_mph + 'mph';
   feelsLikeEl.textContent = data.current.feelslike_f + 'F°';
+  currentTempEl.textContent = data.current.temp_f + 'F°';
 }
 
 function updateUIMetric(data) {
   windSpeedEl.textContent = data.current.wind_kph + 'km/h';
   feelsLikeEl.textContent = data.current.feelslike_c + 'C°';
+  currentTempEl.textContent = data.current.temp_f + 'C°';
 }
 
 function updateUI(data) {
@@ -94,6 +98,7 @@ function updateUI(data) {
   humidityEl.textContent = data.current.humidity;
   chanceOfRainEl.textContent =
     data.forecast.forecastday[0].day.daily_chance_of_rain;
+  conditionEl.src = data.current.condition.icon;
 
   checkIfUnitedStates(data);
   if (imperial === true) {
