@@ -140,6 +140,7 @@ main {
   border-radius: 10px;
   background: rgba(var(--color1), 0.2);
   transition: background 0.25s, box-shadow 0.25s;
+  color: black;
 }
 
 #city-search button {
@@ -193,9 +194,8 @@ input:focus::placeholder {
 
 #bottom-info {
   display: flex;
-  gap: 4rem;
   font-size: 24px;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: end;
   padding-bottom: 0.5rem;
 }
@@ -205,6 +205,7 @@ input:focus::placeholder {
   background-color: rgb(var(--color1));
   padding: 8px 16px;
   border-radius: 60px;
+  white-space: nowrap;
 }
 
 #week-forecast {
