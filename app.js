@@ -183,7 +183,7 @@ function updateUIImperial(data) {
 function updateUIMetric(data) {
   windSpeedEl.textContent = data.current.wind_kph + 'km/h';
   feelsLikeEl.textContent = data.current.feelslike_c + 'C°';
-  currentTempEl.textContent = data.current.temp_f + 'C°';
+  currentTempEl.textContent = data.current.temp_c + 'C°';
 }
 
 function updateUI(data) {
