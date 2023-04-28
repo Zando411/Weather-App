@@ -3,7 +3,7 @@ let data;
 let gradients = {
   morningGradient:
     'linear-gradient(0deg, rgba(200,200,180,1) -100%, rgba(20,210,255,1) 100%)',
-  middayGradient:
+  dayGradient:
     'linear-gradient(0deg, rgba(0,180,190,1) 0%, rgba(60,120,225,1) 100%)',
   eveningGradient:
     'linear-gradient(0deg, rgba(0,92,170,1) 0%, rgba(0,34,126,1) 100%)',
@@ -28,10 +28,56 @@ function transitionBodyBackground(gradient) {
   }
 }
 
-function updateBackground(data) {
-  if (data.current.is_day === 1) {
-    transitionBodyBackground(gradients.middayGradient);
+let gradientInt;
+function getGradientInt(data) {
+  const localTimeString = data.location.localtime;
+  const date = data.forecast.forecastday[0].date;
+  const sunAndMoonTimes = [
+    data.forecast.forecastday[0].astro.moonrise,
+    data.forecast.forecastday[0].astro.moonset,
+    data.forecast.forecastday[0].astro.sunrise,
+    data.forecast.forecastday[0].astro.sunset,
+  ];
+  let [moonrise, moonset, sunrise, sunset] = sunAndMoonTimes;
+  const options = {
+    hour: 'numeric',
+    minute: 'numeric',
+  };
+
+  let endMorning = new Date(`${date} 10:00`);
+  let startEvening = new Date(`${date} 16:00`);
+  moonrise = new Date(`${date} ${moonrise}`);
+  moonset = new Date(`${date} ${moonset}`);
+  sunrise = new Date(`${date} ${sunrise}`);
+  sunset = new Date(`${date} ${sunset}`);
+  let localTime = new Date(localTimeString);
+
+  if (localTime < sunrise && localTime >= moonset) {
+    gradientInt = 1;
+  } else if (localTime > sunrise && localTime < endMorning) {
+    gradientInt = 2;
+  } else if (localTime > endMorning && localTime < startEvening) {
+    gradientInt = 3;
+  } else if (localTime > startEvening && localTime < sunset) {
+    gradientInt = 1;
+  } else if (localTime > sunset && localTime < sunrise) {
+    gradientInt = 0;
+  } else if (localTime > startEvening || localTime < sunrise) {
+    gradientInt = 4;
   } else {
+    transitionBodyBackground(gradients.eveningGradient);
+  }
+}
+
+function updateBackground(data) {
+  getGradientInt(data);
+  if (gradientInt === 1) {
+    transitionBodyBackground(gradients.eveningGradient);
+  } else if (gradientInt === 2) {
+    transitionBodyBackground(gradients.morningGradient);
+  } else if (gradientInt === 3) {
+    transitionBodyBackground(gradients.dayGradient);
+  } else if (gradientInt === 4) {
     transitionBodyBackground(gradients.nightGradient);
   }
 }

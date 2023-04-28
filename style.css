@@ -81,6 +81,11 @@ select {
 }
 
 body {
+  background: linear-gradient(
+    0deg,
+    rgba(0, 92, 170, 1) 0%,
+    rgba(0, 34, 126, 1) 100%
+  );
   position: relative;
 }
 
