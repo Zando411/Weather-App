@@ -137,18 +137,50 @@ function checkIfUnitedStates(data) {
   }
 }
 
+const days = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
+
+function getDaysOfWeek(data) {
+  let daysData = data.forecast.forecastday;
+  let weekdays = [];
+  daysData.forEach((day) => {
+    apiDate = day.date;
+    let date = new Date(apiDate);
+    let weekdayIndex = date.getDay();
+    let weekday = days[weekdayIndex];
+    weekdays.push(weekday);
+  });
+  return weekdays;
+}
+
+function assignDays(data) {
+  let weekdays = getDaysOfWeek(data);
+  const day0 = document.getElementById('day-0-name');
+  const day1 = document.getElementById('day-1-name');
+  const day2 = document.getElementById('day-2-name');
+  const day3 = document.getElementById('day-3-name');
+  const day4 = document.getElementById('day-4-name');
+  const day5 = document.getElementById('day-5-name');
+  const day6 = document.getElementById('day-6-name');
+
+  day0.textContent = 'Today';
+  day1.textContent = weekdays[1];
+  day2.textContent = weekdays[2];
+  day3.textContent = weekdays[3];
+  day4.textContent = weekdays[4];
+  day5.textContent = weekdays[5];
+  day6.textContent = weekdays[6];
+}
+
 function formatDate(data) {
   let date = data.forecast.forecastday[0].date;
-
-  const days = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ];
 
   const months = [
     'January',
@@ -200,6 +232,7 @@ function updateUI(data) {
     updateUIMetric(data);
   }
 
+  assignDays(data);
   updateBackground(data);
   formatDate(data);
 }
