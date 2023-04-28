@@ -147,6 +147,37 @@ const days = [
   'Saturday',
 ];
 
+function getDaysOfWeekTemp(data) {
+  let tempData = data.forecast.forecastday;
+  let maxTemps = [];
+  let minTemps = [];
+  let tempCodes = [];
+  let tempTexts = [];
+  tempData.forEach((temp) => {
+    let apiMaxTemp;
+    let apiMinTemp;
+    let apiCodes;
+    let tempText;
+
+    if (imperial === true) {
+      apiMaxTemp = temp.day.maxtemp_f + 'F°';
+      apiMinTemp = temp.day.mintemp_f + 'F°';
+    } else {
+      apiMaxTemp = temp.day.maxtemp_c + 'C°';
+      apiMinTemp = temp.day.mintemp_c + 'C°';
+    }
+    apiCodes = temp.day.condition.code;
+    tempText = temp.day.condition.text;
+
+    maxTemps.push(apiMaxTemp);
+    minTemps.push(apiMinTemp);
+    tempCodes.push(apiCodes);
+    tempTexts.push(tempText);
+  });
+  // console.log(maxTemps, minTemps, tempCodes);
+  return { maxTemps, minTemps, tempCodes, tempTexts };
+}
+
 function getDaysOfWeek(data) {
   let daysData = data.forecast.forecastday;
   let weekdays = [];
@@ -160,23 +191,41 @@ function getDaysOfWeek(data) {
   return weekdays;
 }
 
-function assignDays(data) {
+function assignWeekdays(data) {
   let weekdays = getDaysOfWeek(data);
-  const day0 = document.getElementById('day-0-name');
-  const day1 = document.getElementById('day-1-name');
-  const day2 = document.getElementById('day-2-name');
-  const day3 = document.getElementById('day-3-name');
-  const day4 = document.getElementById('day-4-name');
-  const day5 = document.getElementById('day-5-name');
-  const day6 = document.getElementById('day-6-name');
+  const dayElements = document.querySelectorAll('.day-name');
 
-  day0.textContent = 'Today';
-  day1.textContent = weekdays[1];
-  day2.textContent = weekdays[2];
-  day3.textContent = weekdays[3];
-  day4.textContent = weekdays[4];
-  day5.textContent = weekdays[5];
-  day6.textContent = weekdays[6];
+  dayElements.forEach((day, index) => {
+    if (index === 0) {
+      day.textContent = 'Today';
+    } else {
+      day.textContent = weekdays[index];
+    }
+  });
+}
+
+function weatherCodes(tempCodes) {}
+
+function assignTemps(data) {
+  const { maxTemps, minTemps, tempCodes, tempTexts } = getDaysOfWeekTemp(data);
+  let max = maxTemps;
+  let min = minTemps;
+  let codes = tempCodes;
+  let texts = tempTexts;
+
+  const imageElements = document.querySelectorAll('.day-image');
+  const maxTempElements = document.querySelectorAll('.day-maxtemp');
+  const minTempElements = document.querySelectorAll('.day-mintemp');
+
+  imageElements.forEach((image, index) => {
+    image.alt = texts[index];
+  });
+  maxTempElements.forEach((maxTempElement, index) => {
+    maxTempElement.textContent = max[index];
+  });
+  minTempElements.forEach((minTempElement, index) => {
+    minTempElement.textContent = min[index];
+  });
 }
 
 function formatDate(data) {
@@ -232,7 +281,8 @@ function updateUI(data) {
     updateUIMetric(data);
   }
 
-  assignDays(data);
+  assignTemps(data);
+  assignWeekdays(data);
   updateBackground(data);
   formatDate(data);
 }
