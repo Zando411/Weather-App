@@ -1,5 +1,41 @@
 let data;
 
+let gradients = {
+  morningGradient:
+    'linear-gradient(0deg, rgba(200,200,180,1) -100%, rgba(20,210,255,1) 100%)',
+  middayGradient:
+    'linear-gradient(0deg, rgba(0,180,190,1) 0%, rgba(60,120,225,1) 100%)',
+  eveningGradient:
+    'linear-gradient(0deg, rgba(0,92,170,1) 0%, rgba(0,34,126,1) 100%)',
+  nightGradient:
+    'linear-gradient(0deg, rgba(5,0,40,1) 0%, rgba(0,9,40,1) 100%)',
+};
+let gradientsArr = Object.values(gradients);
+
+let state = 0;
+function transitionBodyBackground(gradient) {
+  let body = document.querySelector('body');
+  let overlay = document.querySelector('.bodyOverlayGradient');
+
+  if (state === 0) {
+    state = 1;
+    overlay.style.backgroundImage = gradient;
+    overlay.classList.add('transitioning');
+  } else if (state === 1) {
+    state = 0;
+    body.style.backgroundImage = gradient;
+    overlay.classList.remove('transitioning');
+  }
+}
+
+function updateBackground(data) {
+  if (data.current.is_day === 1) {
+    transitionBodyBackground(gradients.middayGradient);
+  } else {
+    transitionBodyBackground(gradients.nightGradient);
+  }
+}
+
 function getCity() {
   let input = document.getElementById('city');
   let city = input.value;
@@ -21,6 +57,17 @@ function unitDisplay() {
     metSpan.style.opacity = '100%';
   }
 }
+
+const body = document.querySelector('body');
+setInterval(function () {
+  if (body.classList.contains('gradient1')) {
+    body.classList.remove('gradient1');
+    body.classList.add('gradient2');
+  } else {
+    body.classList.remove('gradient2');
+    body.classList.add('gradient1');
+  }
+}, 5000);
 
 const cityNameEl = document.getElementById('city-name');
 const cityStateEl = document.getElementById('city-state');
@@ -107,6 +154,7 @@ function updateUI(data) {
     updateUIMetric(data);
   }
 
+  updateBackground(data);
   formatDate(data);
 }
 
