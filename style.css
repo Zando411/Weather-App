@@ -204,26 +204,30 @@ input:focus::placeholder {
   justify-content: space-between;
 }
 
-#right-info {
-  text-align: right;
-}
-
-#left-info {
-  text-align: left;
-}
-
 #bottom-info {
   justify-self: center;
-  display: flex;
-  font-size: 24px;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 200px 1fr;
   align-items: center;
-  padding-bottom: 0.5rem;
+  font-size: calc(0.2rem + 2vw);
+  gap: 1vw;
   backdrop-filter: blur(1px);
   background-color: rgba(255, 255, 255, 0.1);
   border: 2px solid rgba(255, 255, 255, 0.2);
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
-  width: fit-content;
+  width: 80%;
+}
+
+#left-bottom {
+  text-align: right;
+  width: 100%;
+}
+#middle-bottom {
+  width: 200px;
+}
+#right-bottom {
+  text-align: left;
+  width: 100%;
 }
 
 @media screen and (max-width: 1000px) {
@@ -235,7 +239,6 @@ input:focus::placeholder {
 #bottom-info p {
   color: white;
   padding: 8px 16px;
-  border-radius: 60px;
   white-space: nowrap;
 }
 
@@ -323,26 +326,12 @@ input:focus::placeholder {
   justify-self: center;
 }
 
-#left-bottom {
-  text-align: right;
-}
-
 #temp-text {
   font-size: 72px;
 }
 
 #middle-bottom img {
   height: 200px;
-}
-
-#left-bottom {
-  width: 280px;
-}
-#middle-bottom {
-  width: 200px;
-}
-#right-bottom {
-  width: 280px;
 }
 
 @media screen and (max-width: 1000px) {
