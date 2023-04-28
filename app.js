@@ -2,13 +2,13 @@ let data;
 
 let gradients = {
   morningGradient:
-    'linear-gradient(0deg, rgba(200,200,180,1) -100%, rgba(20,210,255,1) 100%)',
+    'linear-gradient(to bottom, rgba(200,200,180,1) -100%, rgba(20,210,255,1) 100%)',
   dayGradient:
-    'linear-gradient(0deg, rgba(0,180,190,1) 0%, rgba(60,120,225,1) 100%)',
+    'linear-gradient(to bottom, rgba(0,180,190,1) 0%, rgba(60,120,225,1) 100%)',
   eveningGradient:
-    'linear-gradient(0deg, rgba(0,92,170,1) 0%, rgba(0,34,126,1) 100%)',
+    'linear-gradient(to bottom, rgba(0,92,170,1) 0%, rgba(0,34,126,1) 100%)',
   nightGradient:
-    'linear-gradient(0deg, rgba(5,0,40,1) 0%, rgba(0,9,40,1) 100%)',
+    'linear-gradient(to bottom, rgba(5,0,40,1) 0%, rgba(0,9,40,1) 100%)',
 };
 let gradientsArr = Object.values(gradients);
 
@@ -275,5 +275,13 @@ function initalizeApp() {
   unitDisplay();
   updateAPI('London');
 }
+
+const inboxField = document.getElementById('city');
+
+inboxField.addEventListener('keydown', function (event) {
+  if (event.key === 'Enter') {
+    getCity();
+  }
+});
 
 initalizeApp();
