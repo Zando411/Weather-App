@@ -167,11 +167,11 @@ function getDaysOfWeekTemp(data) {
     let tempText;
 
     if (imperial === true) {
-      apiMaxTemp = temp.day.maxtemp_f + 'F°';
-      apiMinTemp = temp.day.mintemp_f + 'F°';
+      apiMaxTemp = Math.ceil(temp.day.maxtemp_f) + 'F°';
+      apiMinTemp = Math.ceil(temp.day.mintemp_f) + 'F°';
     } else {
-      apiMaxTemp = temp.day.maxtemp_c + 'C°';
-      apiMinTemp = temp.day.mintemp_c + 'C°';
+      apiMaxTemp = Math.ceil(temp.day.maxtemp_c) + 'C°';
+      apiMinTemp = Math.ceil(temp.day.mintemp_c) + 'C°';
     }
     apiCodes = temp.day.condition.code;
     tempText = temp.day.condition.text;
@@ -212,104 +212,118 @@ function assignWeekdays(data) {
 }
 
 function getIcon(code) {
-  if (isDay === false) {
-    if (code === 1000) {
-      return 'night/clear_night.svg';
-    }
-    if (code === 1003) {
-      return 'night/night_partly_cloudy.svg';
-    }
-  } else {
-    if (code === 1000) {
-      return 'day/sunny.svg';
-    }
-    if (code === 1003) {
-      return 'day/partly_cloudy.svg';
-    }
-    if (code === 1006 || 1009) {
-      return 'day/partly_cloudy.svg';
-    }
-    if (code === 1030) {
-      return 'day/mist.svg';
-    }
-    if (code === 1030) {
-      return 'day/mist.svg';
-    }
-    if (
-      code === 1063 ||
-      1150 ||
-      1153 ||
-      1180 ||
-      1183 ||
-      1186 ||
-      1189 ||
-      1192 ||
-      1195 ||
-      1240 ||
-      1243 ||
-      1246
-    ) {
-      return 'day/rain.svg';
-    }
-    if (
-      code === 1066 ||
-      1069 ||
-      1072 ||
-      1114 ||
-      1117 ||
-      1168 ||
-      1171 ||
-      1198 ||
-      1201 ||
-      1204 ||
-      1207 ||
-      1210 ||
-      1213 ||
-      1216 ||
-      1219 ||
-      1222 ||
-      1225 ||
-      1237 ||
-      1249 ||
-      1252 ||
-      1255 ||
-      1258 ||
-      1261 ||
-      1264
-    ) {
-      return 'day/snowing.svg';
-    }
-    if (code === 1087 || 1273 || 1276 || 1279 || 1282) {
-      return 'day/thunder.svg';
-    }
-    if (code === 1135 || 1147) {
-      return 'day/fog.svg';
-    }
+  let iconPath;
+  switch (code) {
+    case 1000:
+      iconPath = isDay ? 'day/sunny.svg' : 'night/clear_night.svg';
+      break;
+    case 1003:
+      iconPath = isDay
+        ? 'day/partly_cloudy.svg'
+        : 'night/night_partly_cloudy.svg';
+      break;
+    case 1006:
+    case 1009:
+      iconPath = 'day/cloudy.svg';
+      break;
+    case 1030:
+      iconPath = 'day/mist.svg';
+      break;
+    case 1063:
+    case 1150:
+    case 1153:
+    case 1180:
+    case 1183:
+    case 1186:
+    case 1189:
+    case 1192:
+    case 1195:
+    case 1240:
+    case 1243:
+    case 1246:
+      iconPath = 'day/raining.svg';
+      break;
+    case 1066:
+    case 1069:
+    case 1072:
+    case 1114:
+    case 1117:
+    case 1168:
+    case 1171:
+    case 1198:
+    case 1201:
+    case 1204:
+    case 1207:
+    case 1210:
+    case 1213:
+    case 1216:
+    case 1219:
+    case 1222:
+    case 1225:
+    case 1237:
+    case 1249:
+    case 1252:
+    case 1255:
+    case 1258:
+    case 1261:
+    case 1264:
+      iconPath = 'day/snowing.svg';
+      break;
+    case 1087:
+    case 1273:
+    case 1276:
+    case 1279:
+    case 1282:
+      iconPath = 'day/thunder.svg';
+      break;
+    case 1135:
+    case 1147:
+      iconPath = 'day/fog.svg';
+      break;
+    default:
+      // Return a default icon path in case the code value is not recognized
+      iconPath = 'day/sunny.svg';
+      break;
+  }
+
+  return iconPath;
+}
+
+function clearCards() {
+  const cardsContainer = document.getElementById('week-forecast');
+  while (cardsContainer.firstChild) {
+    cardsContainer.removeChild(cardsContainer.firstChild);
   }
 }
 
 function assignTemps(data) {
+  clearCards();
   const { maxTemps, minTemps, tempCodes, tempTexts } = getDaysOfWeekTemp(data);
-  let max = maxTemps;
-  let min = minTemps;
-  let codes = tempCodes;
-  let texts = tempTexts;
-  console.log(codes);
+  const weekdays = getDaysOfWeek(data);
 
-  const imageElements = document.querySelectorAll('.day-image');
-  const maxTempElements = document.querySelectorAll('.day-maxtemp');
-  const minTempElements = document.querySelectorAll('.day-mintemp');
+  const cardTemplate = document.getElementById('card-template');
 
-  imageElements.forEach((image, index) => {
-    image.src = getIcon(codes[index]);
-    image.alt = texts[index];
-  });
-  maxTempElements.forEach((maxTempElement, index) => {
-    maxTempElement.textContent = max[index];
-  });
-  minTempElements.forEach((minTempElement, index) => {
-    minTempElement.textContent = min[index];
-  });
+  for (let i = 0; i < weekdays.length; i++) {
+    const card = cardTemplate.content.cloneNode(true);
+    const dayNameElement = card.querySelector('.day-name');
+    const imageElement = card.querySelector('.day-image');
+    const maxTempElement = card.querySelector('.day-maxtemp');
+    const minTempElement = card.querySelector('.day-mintemp');
+
+    if (i === 0) {
+      dayNameElement.textContent = 'Today';
+    } else {
+      dayNameElement.textContent = weekdays[i];
+    }
+
+    imageElement.src = getIcon(tempCodes[i]);
+    imageElement.alt = tempTexts[i];
+
+    maxTempElement.textContent = maxTemps[i];
+    minTempElement.textContent = minTemps[i];
+
+    document.getElementById('week-forecast').appendChild(card);
+  }
 }
 
 function formatDate(data) {
@@ -341,14 +355,14 @@ function formatDate(data) {
 
 function updateUIImperial(data) {
   windSpeedEl.textContent = data.current.wind_mph + 'mph';
-  feelsLikeEl.textContent = data.current.feelslike_f + 'F°';
-  currentTempEl.textContent = data.current.temp_f + 'F°';
+  feelsLikeEl.textContent = Math.ceil(data.current.feelslike_f) + 'F°';
+  currentTempEl.textContent = Math.ceil(data.current.temp_f) + 'F°';
 }
 
 function updateUIMetric(data) {
   windSpeedEl.textContent = data.current.wind_kph + 'km/h';
-  feelsLikeEl.textContent = data.current.feelslike_c + 'C°';
-  currentTempEl.textContent = data.current.temp_c + 'C°';
+  feelsLikeEl.textContent = Math.ceil(data.current.feelslike_c) + 'C°';
+  currentTempEl.textContent = Math.ceil(data.current.temp_c) + 'C°';
 }
 
 function updateUI(data) {
