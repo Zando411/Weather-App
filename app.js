@@ -128,7 +128,6 @@ const humidityEl = document.getElementById('humidity');
 const windSpeedEl = document.getElementById('wind-speed');
 const feelsLikeEl = document.getElementById('feels-like');
 const chanceOfRainEl = document.getElementById('chance-of-rain');
-const currentWeekdayEl = document.getElementById('current-weekday');
 const dateEl = document.getElementById('current-date');
 const conditionEl = document.getElementById('condition-img');
 const currentTempEl = document.getElementById('current-temp');
@@ -143,16 +142,6 @@ function checkIfUnitedStates(data) {
     cityStateEl.textContent = country;
   }
 }
-
-const days = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-];
 
 function getDaysOfWeekTemp(data) {
   let tempData = data.forecast.forecastday;
@@ -186,6 +175,16 @@ function getDaysOfWeekTemp(data) {
 }
 
 function getDaysOfWeek(data) {
+  const days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+
   let daysData = data.forecast.forecastday;
   let weekdays = [];
   daysData.forEach((day) => {
@@ -327,7 +326,18 @@ function assignTemps(data) {
 }
 
 function formatDate(data) {
+  const currentWeekdayEl = document.getElementById('current-weekday');
   let date = data.forecast.forecastday[0].date;
+
+  const days = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+  ];
 
   const months = [
     'January',
@@ -344,10 +354,12 @@ function formatDate(data) {
     'December',
   ];
   let d = new Date(date);
-  let dayName = days[d.getDay() + 1];
+  let dayName = days[d.getDay()];
   let monthName = months[d.getMonth()];
   let fullYear = d.getFullYear();
   let day = d.getDate() + 1;
+
+  console.log(dayName);
 
   currentWeekdayEl.textContent = dayName;
   dateEl.textContent = ` ${day} ${monthName} ${fullYear}`;
@@ -378,11 +390,11 @@ function updateUI(data) {
   } else {
     updateUIMetric(data);
   }
+  formatDate(data);
+  updateBackground(data);
 
   assignTemps(data);
   assignWeekdays(data);
-  updateBackground(data);
-  formatDate(data);
 }
 
 function changeUnits() {
@@ -410,8 +422,9 @@ async function updateAPI(cityName) {
     data = APIData;
 
     console.log(data);
-    newTime(data);
     updateUI(data);
+    newTime(data);
+
     return data;
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -463,6 +476,12 @@ inboxField.addEventListener('keydown', function (event) {
   if (event.key === 'Enter') {
     getCity();
   }
+});
+
+let overlay = document.querySelector('.bodyOverlayGradient');
+
+overlay.addEventListener('load', function () {
+  transitionBodyBackground(gradients.eveningGradient);
 });
 
 initalizeApp();
