@@ -28,7 +28,7 @@ function transitionBodyBackground(gradient) {
   }
 }
 
-let isDay;
+let isDay = true;
 let gradientInt;
 function getGradientInt(data) {
   const localTimeString = data.location.localtime;
@@ -382,7 +382,7 @@ function updateUI(data) {
   humidityEl.textContent = data.current.humidity;
   chanceOfRainEl.textContent =
     data.forecast.forecastday[0].day.daily_chance_of_rain;
-  // conditionEl.src = data.current.condition.icon;
+  conditionEl.src = getIcon(data.current.condition.code);
 
   checkIfUnitedStates(data);
   if (imperial === true) {
@@ -392,7 +392,7 @@ function updateUI(data) {
   }
   formatDate(data);
   updateBackground(data);
-
+  conditionEl.src = getIcon(data.current.condition.code);
   assignTemps(data);
   assignWeekdays(data);
 }
