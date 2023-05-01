@@ -412,7 +412,7 @@ function changeUnits() {
 async function updateAPI(cityName) {
   try {
     const res = await fetch(
-      `http://api.weatherapi.com/v1/forecast.json?key=2536bf33c77742c1a5430859232604&q=${cityName}&days=7&aqi=no&alerts=no`
+      `https://api.weatherapi.com/v1/forecast.json?key=2536bf33c77742c1a5430859232604&q=${cityName}&days=7&aqi=no&alerts=no`
     );
     if (!res.ok) {
       throw new Error('Network response was not ok');
