@@ -28,6 +28,7 @@ function transitionBodyBackground(gradient) {
   }
 }
 
+let isDay;
 let gradientInt;
 function getGradientInt(data) {
   const localTimeString = data.location.localtime;
@@ -66,6 +67,12 @@ function getGradientInt(data) {
     gradientInt = 4;
   } else {
     transitionBodyBackground(gradients.eveningGradient);
+  }
+
+  if (gradientInt === 4) {
+    isDay = false;
+  } else {
+    isDay = true;
   }
 }
 
@@ -204,7 +211,82 @@ function assignWeekdays(data) {
   });
 }
 
-function weatherCodes(tempCodes) {}
+function getIcon(code) {
+  if (isDay === false) {
+    if (code === 1000) {
+      return 'night/clear_night.svg';
+    }
+    if (code === 1003) {
+      return 'night/night_partly_cloudy.svg';
+    }
+  } else {
+    if (code === 1000) {
+      return 'day/sunny.svg';
+    }
+    if (code === 1003) {
+      return 'day/partly_cloudy.svg';
+    }
+    if (code === 1006 || 1009) {
+      return 'day/partly_cloudy.svg';
+    }
+    if (code === 1030) {
+      return 'day/mist.svg';
+    }
+    if (code === 1030) {
+      return 'day/mist.svg';
+    }
+    if (
+      code === 1063 ||
+      1150 ||
+      1153 ||
+      1180 ||
+      1183 ||
+      1186 ||
+      1189 ||
+      1192 ||
+      1195 ||
+      1240 ||
+      1243 ||
+      1246
+    ) {
+      return 'day/rain.svg';
+    }
+    if (
+      code === 1066 ||
+      1069 ||
+      1072 ||
+      1114 ||
+      1117 ||
+      1168 ||
+      1171 ||
+      1198 ||
+      1201 ||
+      1204 ||
+      1207 ||
+      1210 ||
+      1213 ||
+      1216 ||
+      1219 ||
+      1222 ||
+      1225 ||
+      1237 ||
+      1249 ||
+      1252 ||
+      1255 ||
+      1258 ||
+      1261 ||
+      1264
+    ) {
+      return 'day/snowing.svg';
+    }
+    if (code === 1087 || 1273 || 1276 || 1279 || 1282) {
+      return 'day/thunder.svg';
+    }
+    if (code === 1135 || 1147) {
+      return 'day/fog.svg';
+    }
+  }
+}
 
 function assignTemps(data) {
   const { maxTemps, minTemps, tempCodes, tempTexts } = getDaysOfWeekTemp(data);
@@ -212,12 +294,14 @@ function assignTemps(data) {
   let min = minTemps;
   let codes = tempCodes;
   let texts = tempTexts;
+  console.log(codes);
 
   const imageElements = document.querySelectorAll('.day-image');
   const maxTempElements = document.querySelectorAll('.day-maxtemp');
   const minTempElements = document.querySelectorAll('.day-mintemp');
 
   imageElements.forEach((image, index) => {
+    image.src = getIcon(codes[index]);
     image.alt = texts[index];
   });
   maxTempElements.forEach((maxTempElement, index) => {
@@ -272,7 +356,7 @@ function updateUI(data) {
   humidityEl.textContent = data.current.humidity;
   chanceOfRainEl.textContent =
     data.forecast.forecastday[0].day.daily_chance_of_rain;
-  conditionEl.src = data.current.condition.icon;
+  // conditionEl.src = data.current.condition.icon;
 
   checkIfUnitedStates(data);
   if (imperial === true) {
